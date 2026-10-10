@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GenZeniusPresensi Pro - Sistem Presensi Kehadiran Realtime</title>
+  <title>GenZeniusPresensi Pro - Sistem Kehadiran Realtime</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -27,15 +27,6 @@
         extend: {
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-            }
           }
         }
       }
@@ -45,19 +36,16 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #0f172a;
-      color: #f8fafc;
+      background-color: #09090b;
+      color: #f4f4f5;
     }
-    .glass-panel {
-      background: rgba(30, 41, 59, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    .app-panel {
+      background-color: #121214;
+      border: 1px solid #27272a;
     }
-    .glass-card {
-      background: rgba(51, 65, 85, 0.4);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+    .app-card {
+      background-color: #18181b;
+      border: 1px solid #27272a;
     }
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
@@ -65,14 +53,14 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.6);
+      background: #09090b;
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(100, 116, 139, 0.5);
+      background: #3f3f46;
       border-radius: 4px;
     }
     #reader video {
-      border-radius: 12px;
+      border-radius: 6px;
       object-fit: cover;
     }
     /* Toast Animation */
@@ -81,15 +69,13 @@
       to { transform: translateY(0); opacity: 1; }
     }
     .animate-slide-in {
-      animation: slideIn 0.3s ease-out forwards;
+      animation: slideIn 0.25s ease-out forwards;
     }
     /* Scan Border Glow Effect */
     .scan-success-glow {
-      box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
-      border-color: #10b981 !important;
+      border-color: #f4f4f5 !important;
     }
     .scan-warning-glow {
-      box-shadow: 0 0 25px rgba(245, 158, 11, 0.6);
       border-color: #f59e0b !important;
     }
 
@@ -109,44 +95,44 @@
         width: 380px !important;
         margin: 0 !important;
         box-shadow: none !important;
-        border: 1px solid #4338ca !important;
+        border: 1px solid #3f3f46 !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
       }
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased bg-slate-950 text-slate-100">
+<body class="min-h-screen flex flex-col antialiased bg-[#09090b] text-[#f4f4f5]">
 
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
 
-  <header class="glass-panel sticky top-0 z-40 border-b border-slate-800 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+  <header class="app-panel sticky top-0 z-40 border-b border-[#27272a] px-4 lg:px-8 py-3.5 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-        <i data-lucide="qr-code" class="w-6 h-6 text-white"></i>
+      <div class="w-9 h-9 rounded bg-[#27272a] flex items-center justify-center border border-[#3f3f46]">
+        <i data-lucide="qr-code" class="w-5 h-5 text-white"></i>
       </div>
       <div>
-        <h1 class="font-bold text-lg leading-tight text-slate-100">GenZeniusPresensi<span class="text-indigo-400">Pro</span></h1>
-        <p class="text-xs text-slate-400">Sistem Kehadiran Realtime & Anti-Spam Scanner</p>
+        <h1 class="font-semibold text-sm leading-tight text-white tracking-wide">GenZeniusPresensi <span class="text-zinc-400 font-normal">Pro</span></h1>
+        <p class="text-xs text-zinc-400">Sistem Kehadiran Realtime & Anti-Spam Scanner</p>
       </div>
     </div>
 
     <!-- Live Clock, Sync Badge & Security Status -->
     <div class="flex items-center gap-3 md:gap-4">
       <div class="hidden sm:flex flex-col items-end">
-        <span id="live-time" class="text-sm font-semibold text-indigo-300 font-mono">00:00:00 WIB</span>
-        <span id="live-date" class="text-xs text-slate-400">-</span>
+        <span id="live-time" class="text-xs font-medium text-zinc-300 font-mono">00:00:00 WIB</span>
+        <span id="live-date" class="text-xs text-zinc-500">-</span>
       </div>
 
-      <div id="sync-status-badge" class="flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-full transition-all">
-        <span id="sync-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-        <span class="text-xs font-medium text-amber-400" id="sync-status">Menghubungkan...</span>
+      <div id="sync-status-badge" class="flex items-center gap-2 bg-[#18181b] border border-[#27272a] px-3 py-1.5 rounded-md transition-all">
+        <span id="sync-dot" class="w-2 h-2 rounded-full bg-amber-500"></span>
+        <span class="text-xs font-medium text-amber-500" id="sync-status">Menghubungkan...</span>
       </div>
 
       <!-- Lock / Security Button -->
-      <button id="btn-lock-session" onclick="lockSession()" class="hidden flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-xl text-xs font-medium transition">
-        <i data-lucide="lock" class="w-3.5 h-3.5 text-indigo-400"></i>
+      <button id="btn-lock-session" onclick="lockSession()" class="hidden flex items-center gap-1.5 bg-[#18181b] hover:bg-[#27272a] border border-[#27272a] text-zinc-200 px-3 py-1.5 rounded-md text-xs font-medium transition">
+        <i data-lucide="lock" class="w-3.5 h-3.5 text-zinc-400"></i>
         <span class="hidden md:inline">Kunci Akses</span>
       </button>
     </div>
@@ -154,86 +140,86 @@
 
   <div class="flex flex-1 overflow-hidden">
     <!-- Sidebar Navigation -->
-    <aside class="w-64 glass-panel hidden md:flex flex-col p-4 gap-2 border-r border-slate-800 shrink-0">
-      <div class="text-xs font-semibold text-slate-400 px-3 py-2 uppercase tracking-wider">Menu Utama</div>
+    <aside class="w-64 app-panel hidden md:flex flex-col p-3 gap-1.5 border-r border-[#27272a] shrink-0">
+      <div class="text-xs font-semibold text-zinc-400 px-3 py-2 uppercase tracking-wider">Menu Utama</div>
 
-      <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all bg-indigo-600 text-white">
-        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+      <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium transition-all bg-[#27272a] text-white">
+        <i data-lucide="layout-dashboard" class="w-4 h-4 text-zinc-300"></i>
         <span>Dashboard</span>
-        <i data-lucide="lock" id="icon-lock-dashboard" class="w-3.5 h-3.5 ml-auto text-slate-400"></i>
+        <i data-lucide="lock" id="icon-lock-dashboard" class="w-3.5 h-3.5 ml-auto text-zinc-500"></i>
       </button>
 
-      <button onclick="switchTab('scan')" id="nav-scan" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
-        <i data-lucide="scan" class="w-4 h-4"></i>
+      <button onclick="switchTab('scan')" id="nav-scan" class="nav-btn flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium transition-all text-zinc-400 hover:bg-[#18181b] hover:text-white">
+        <i data-lucide="scan" class="w-4 h-4 text-zinc-400"></i>
         <span>Scan QR / Absen</span>
-        <span class="ml-auto bg-indigo-500/20 text-indigo-300 text-[10px] px-2 py-0.5 rounded-full font-bold">LIVE</span>
+        <span class="ml-auto bg-[#27272a] text-zinc-300 border border-[#3f3f46] text-[12px] px-1.5 py-0.5 rounded font-mono">LIVE</span>
       </button>
 
-      <button onclick="switchTab('siswa')" id="nav-siswa" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
-        <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+      <button onclick="switchTab('siswa')" id="nav-siswa" class="nav-btn flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium transition-all text-zinc-400 hover:bg-[#18181b] hover:text-white">
+        <i data-lucide="graduation-cap" class="w-4 h-4 text-zinc-400"></i>
         <span>Presensi Siswa</span>
-        <i data-lucide="lock" id="icon-lock-siswa" class="w-3.5 h-3.5 ml-auto text-slate-400"></i>
+        <i data-lucide="lock" id="icon-lock-siswa" class="w-3.5 h-3.5 ml-auto text-zinc-500"></i>
       </button>
 
-      <button onclick="switchTab('tentor')" id="nav-tentor" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
-        <i data-lucide="briefcase" class="w-4 h-4"></i>
+      <button onclick="switchTab('tentor')" id="nav-tentor" class="nav-btn flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium transition-all text-zinc-400 hover:bg-[#18181b] hover:text-white">
+        <i data-lucide="briefcase" class="w-4 h-4 text-zinc-400"></i>
         <span>Presensi Tentor</span>
-        <i data-lucide="lock" id="icon-lock-tentor" class="w-3.5 h-3.5 ml-auto text-slate-400"></i>
+        <i data-lucide="lock" id="icon-lock-tentor" class="w-3.5 h-3.5 ml-auto text-zinc-500"></i>
       </button>
 
-      <div class="text-xs font-semibold text-slate-400 px-3 py-2 mt-4 uppercase tracking-wider">Master Data</div>
+      <div class="text-xs font-semibold text-zinc-400 px-3 py-2 mt-3 uppercase tracking-wider">Master Data</div>
 
-      <button onclick="switchTab('master')" id="nav-master" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
-        <i data-lucide="users" class="w-4 h-4"></i>
+      <button onclick="switchTab('master')" id="nav-master" class="nav-btn flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium transition-all text-zinc-400 hover:bg-[#18181b] hover:text-white">
+        <i data-lucide="users" class="w-4 h-4 text-zinc-400"></i>
         <span>Data Siswa & Tentor</span>
-        <i data-lucide="lock" id="icon-lock-master" class="w-3.5 h-3.5 ml-auto text-slate-400"></i>
+        <i data-lucide="lock" id="icon-lock-master" class="w-3.5 h-3.5 ml-auto text-zinc-500"></i>
       </button>
 
-      <button onclick="switchTab('generator')" id="nav-generator" class="nav-btn flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
-        <i data-lucide="qr-code" class="w-4 h-4"></i>
+      <button onclick="switchTab('generator')" id="nav-generator" class="nav-btn flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium transition-all text-zinc-400 hover:bg-[#18181b] hover:text-white">
+        <i data-lucide="qr-code" class="w-4 h-4 text-zinc-400"></i>
         <span>Cetak Kartu QR</span>
-        <i data-lucide="lock" id="icon-lock-generator" class="w-3.5 h-3.5 ml-auto text-slate-400"></i>
+        <i data-lucide="lock" id="icon-lock-generator" class="w-3.5 h-3.5 ml-auto text-zinc-500"></i>
       </button>
 
-      <div class="mt-auto pt-4 border-t border-slate-800/80">
-        <div class="glass-card p-3 rounded-xl flex items-center justify-between">
-          <div class="flex items-center gap-3 overflow-hidden">
-            <div class="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs shrink-0">
+      <div class="mt-auto pt-3 border-t border-[#27272a]">
+        <div class="app-card p-2.5 rounded-md flex items-center justify-between">
+          <div class="flex items-center gap-2.5 overflow-hidden">
+            <div class="w-7 h-7 rounded bg-[#27272a] text-zinc-300 flex items-center justify-center font-bold text-xs shrink-0 border border-[#3f3f46]">
               ADM
             </div>
             <div class="overflow-hidden">
-              <p class="text-xs font-semibold text-slate-200 truncate" id="user-session-status">Terkunci</p>
-              <p class="text-[10px] text-slate-400 truncate">Hanya Admin</p>
+              <p class="text-xs font-medium text-zinc-200 truncate" id="user-session-status">Terkunci</p>
+              <p class="text-xs text-zinc-400 truncate">Hanya Admin</p>
             </div>
           </div>
-          <button onclick="openChangePinModal()" title="Ubah Passkey/PIN" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-400 hover:bg-slate-800 transition">
-            <i data-lucide="key-round" class="w-4 h-4"></i>
+          <button onclick="openChangePinModal()" title="Ubah Passkey/PIN" class="p-1.5 rounded text-zinc-400 hover:text-white hover:bg-[#27272a] transition">
+            <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
           </button>
         </div>
       </div>
     </aside>
 
     <!-- Mobile Navigation Bar -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-slate-800 z-50 flex justify-around p-2">
-      <button onclick="switchTab('dashboard')" class="mobile-nav-btn p-2 text-indigo-400 flex flex-col items-center">
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 app-panel border-t border-[#27272a] z-50 flex justify-around p-2">
+      <button onclick="switchTab('dashboard')" class="mobile-nav-btn p-2 text-white flex flex-col items-center">
         <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-        <span class="text-[10px] mt-1">Dashboard</span>
+        <span class="text-xs mt-1">Dashboard</span>
       </button>
-      <button onclick="switchTab('scan')" class="mobile-nav-btn p-2 text-slate-400 hover:text-indigo-400 flex flex-col items-center">
+      <button onclick="switchTab('scan')" class="mobile-nav-btn p-2 text-zinc-400 hover:text-white flex flex-col items-center">
         <i data-lucide="scan" class="w-5 h-5"></i>
-        <span class="text-[10px] mt-1">Absen</span>
+        <span class="text-xs mt-1">Absen</span>
       </button>
-      <button onclick="switchTab('siswa')" class="mobile-nav-btn p-2 text-slate-400 hover:text-indigo-400 flex flex-col items-center">
+      <button onclick="switchTab('siswa')" class="mobile-nav-btn p-2 text-zinc-400 hover:text-white flex flex-col items-center">
         <i data-lucide="graduation-cap" class="w-5 h-5"></i>
-        <span class="text-[10px] mt-1">Siswa</span>
+        <span class="text-xs mt-1">Siswa</span>
       </button>
-      <button onclick="switchTab('tentor')" class="mobile-nav-btn p-2 text-slate-400 hover:text-indigo-400 flex flex-col items-center">
+      <button onclick="switchTab('tentor')" class="mobile-nav-btn p-2 text-zinc-400 hover:text-white flex flex-col items-center">
         <i data-lucide="briefcase" class="w-5 h-5"></i>
-        <span class="text-[10px] mt-1">Tentor</span>
+        <span class="text-xs mt-1">Tentor</span>
       </button>
-      <button onclick="switchTab('master')" class="mobile-nav-btn p-2 text-slate-400 hover:text-indigo-400 flex flex-col items-center">
+      <button onclick="switchTab('master')" class="mobile-nav-btn p-2 text-zinc-400 hover:text-white flex flex-col items-center">
         <i data-lucide="users" class="w-5 h-5"></i>
-        <span class="text-[10px] mt-1">Master</span>
+        <span class="text-xs mt-1">Master</span>
       </button>
     </nav>
 
@@ -244,10 +230,10 @@
       <section id="tab-dashboard" class="tab-content space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 class="text-2xl font-bold text-white">Ringkasan Presensi Hari Ini</h2>
-            <p class="text-slate-400 text-sm">Data tersimpan langsung ke Firestore Cloud & lokal otomatis.</p>
+            <h2 class="text-xl font-bold text-white tracking-tight">Ringkasan Presensi Hari Ini</h2>
+            <p class="text-zinc-400 text-xs">Data tersimpan langsung ke Firestore Cloud & lokal otomatis.</p>
           </div>
-          <button onclick="switchTab('scan')" class="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-sm font-semibold px-4 py-2.5 rounded-xl shadow-lg shadow-indigo-500/25 transition">
+          <button onclick="switchTab('scan')" class="inline-flex items-center gap-2 bg-[#27272a] hover:bg-[#3f3f46] border border-[#3f3f46] text-white text-xs font-medium px-3.5 py-2 rounded-md transition">
             <i data-lucide="scan-line" class="w-4 h-4"></i>
             Mulai Scan Kehadiran
           </button>
@@ -255,80 +241,83 @@
 
         <!-- Metric Stat Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="glass-panel p-5 rounded-2xl flex items-center justify-between">
+          <div class="app-panel p-4 rounded-lg flex items-center justify-between">
             <div>
-              <p class="text-xs font-medium text-slate-400">Total Siswa Terdaftar</p>
-              <h3 class="text-2xl font-bold text-white mt-1" id="stat-total-siswa">0</h3>
-              <p class="text-xs text-emerald-400 mt-1 flex items-center gap-1">
+              <p class="text-xs font-medium text-zinc-400">Total Siswa Terdaftar</p>
+              <h3 class="text-xl font-bold text-white mt-1" id="stat-total-siswa">0</h3>
+              <p class="text-xs text-zinc-400 mt-1 flex items-center gap-1">
                 <i data-lucide="database" class="w-3 h-3"></i> Sync Firestore
               </p>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center">
-              <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+            <div class="w-10 h-10 rounded bg-[#18181b] border border-[#27272a] text-zinc-300 flex items-center justify-center">
+              <i data-lucide="graduation-cap" class="w-5 h-5"></i>
             </div>
           </div>
 
-          <div class="glass-panel p-5 rounded-2xl flex items-center justify-between">
+          <div class="app-panel p-4 rounded-lg flex items-center justify-between">
             <div>
-              <p class="text-xs font-medium text-slate-400">Total Tentor Bimbel</p>
-              <h3 class="text-2xl font-bold text-white mt-1" id="stat-total-tentor">0</h3>
-              <p class="text-xs text-indigo-400 mt-1 flex items-center gap-1">
+              <p class="text-xs font-medium text-zinc-400">Total Tentor Bimbel</p>
+              <h3 class="text-xl font-bold text-white mt-1" id="stat-total-tentor">0</h3>
+              <p class="text-xs text-zinc-400 mt-1 flex items-center gap-1">
                 <i data-lucide="check-circle" class="w-3 h-3"></i> Pengajar
               </p>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
-              <i data-lucide="user-check" class="w-6 h-6"></i>
+            <div class="w-10 h-10 rounded bg-[#18181b] border border-[#27272a] text-zinc-300 flex items-center justify-center">
+              <i data-lucide="user-check" class="w-5 h-5"></i>
             </div>
           </div>
 
-          <div class="glass-panel p-5 rounded-2xl flex items-center justify-between">
+          <div class="app-panel p-4 rounded-lg flex items-center justify-between">
             <div>
-              <p class="text-xs font-medium text-slate-400">Siswa Hadir Hari Ini</p>
-              <h3 class="text-2xl font-bold text-white mt-1" id="stat-siswa-hadir">0</h3>
-              <p class="text-xs text-emerald-400 mt-1" id="stat-siswa-pct">0% Persentase</p>
+              <p class="text-xs font-medium text-zinc-400">Siswa Hadir Hari Ini</p>
+              <h3 class="text-xl font-bold text-white mt-1" id="stat-siswa-hadir">0</h3>
+              <p class="text-xs text-zinc-400 mt-1" id="stat-siswa-pct">0% Persentase</p>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
-              <i data-lucide="check-square" class="w-6 h-6"></i>
+            <div class="w-10 h-10 rounded bg-[#18181b] border border-[#27272a] text-zinc-300 flex items-center justify-center">
+              <i data-lucide="check-square" class="w-5 h-5"></i>
             </div>
           </div>
 
-          <div class="glass-panel p-5 rounded-2xl flex items-center justify-between">
+          <div class="app-panel p-4 rounded-lg flex items-center justify-between">
             <div>
-              <p class="text-xs font-medium text-slate-400">Tentor Mengajar Hari Ini</p>
-              <h3 class="text-2xl font-bold text-white mt-1" id="stat-tentor-hadir">0</h3>
-              <p class="text-xs text-purple-400 mt-1" id="stat-tentor-pct">0% Sesi Terisi</p>
+              <p class="text-xs font-medium text-zinc-400">Tentor Mengajar Hari Ini</p>
+              <h3 class="text-xl font-bold text-white mt-1" id="stat-tentor-hadir">0</h3>
+              <p class="text-xs text-zinc-400 mt-1" id="stat-tentor-pct">0% Sesi Terisi</p>
             </div>
-            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
-              <i data-lucide="book-open" class="w-6 h-6"></i>
+            <div class="w-10 h-10 rounded bg-[#18181b] border border-[#27272a] text-zinc-300 flex items-center justify-center">
+              <i data-lucide="book-open" class="w-5 h-5"></i>
             </div>
           </div>
         </div>
 
         <!-- Analytics Charts and Activity Stream -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="glass-panel p-5 rounded-2xl lg:col-span-2 flex flex-col justify-between">
+          <div class="app-panel p-4 rounded-lg lg:col-span-2 flex flex-col justify-between">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="font-semibold text-slate-100 flex items-center gap-2">
-                <i data-lucide="bar-chart-3" class="w-5 h-5 text-indigo-400"></i>
+              <h3 class="text-xs font-semibold text-zinc-200 flex items-center gap-2">
+                <i data-lucide="bar-chart-3" class="w-4 h-4 text-zinc-400"></i>
                 Grafik Kehadiran 7 Hari Terakhir
               </h3>
             </div>
-            <div class="w-full h-64">
+            <div class="w-full h-60">
               <canvas id="attendanceChart"></canvas>
             </div>
           </div>
 
           <!-- Live Feed Activity -->
-          <div class="glass-panel p-5 rounded-2xl flex flex-col">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="font-semibold text-slate-100 flex items-center gap-2">
-                <i data-lucide="activity" class="w-5 h-5 text-emerald-400"></i>
+          <div class="app-panel p-4 rounded-lg flex flex-col">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-xs font-semibold text-zinc-200 flex items-center gap-2">
+                <i data-lucide="activity" class="w-4 h-4 text-zinc-400"></i>
                 Aktivitas Presensi Terkini
               </h3>
-              <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-1 rounded">Live Sync</span>
+              <span class="text-xs font-medium text-zinc-400 flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                Live Sync
+              </span>
             </div>
 
-            <div id="dashboard-recent-feed" class="space-y-3 overflow-y-auto max-h-[260px] pr-1">
+            <div id="dashboard-recent-feed" class="space-y-2.5 overflow-y-auto max-h-[240px] pr-1">
               <!-- Dynamically Populated -->
             </div>
           </div>
@@ -339,56 +328,56 @@
       <section id="tab-scan" class="tab-content space-y-6 hidden">
         <div class="max-w-3xl mx-auto">
           <div class="text-center mb-6">
-            <h2 class="text-2xl font-bold text-white">Pemindai QR Code Presensi (Anti-Spam)</h2>
-            <p class="text-slate-400 text-sm">Arahkan QR Code Kartu Siswa/Tentor ke Kamera. Dilengkapi perlindungan scan ganda beruntun.</p>
+            <h2 class="text-xl font-bold text-white tracking-tight">Pemindai QR Code Presensi</h2>
+            <p class="text-zinc-400 text-xs">Arahkan QR Code Kartu Siswa/Tentor ke Kamera.</p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Camera Scanner Area -->
-            <div class="glass-panel p-5 rounded-2xl flex flex-col items-center">
+            <div class="app-panel p-4 rounded-lg flex flex-col items-center">
               <div class="w-full flex items-center justify-between mb-3">
-                <span class="text-sm font-semibold text-slate-200 flex items-center gap-2">
-                  <i data-lucide="camera" class="w-4 h-4 text-indigo-400"></i> Scanner Kamera
+                <span class="text-xs font-medium text-zinc-200 flex items-center gap-2">
+                  <i data-lucide="camera" class="w-3.5 h-3.5 text-zinc-400"></i> Scanner Kamera
                 </span>
-                <span id="camera-status" class="text-xs bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full font-medium">Siap</span>
+                <span id="camera-status" class="text-xs bg-[#18181b] border border-[#27272a] text-amber-500 px-2 py-0.5 rounded font-medium">Siap</span>
               </div>
 
               <!-- Scanner Render Container -->
-              <div id="scan-frame-container" class="w-full aspect-square bg-slate-900 border-2 border-dashed border-slate-700 rounded-xl overflow-hidden relative flex items-center justify-center transition-all duration-300">
+              <div id="scan-frame-container" class="w-full aspect-square bg-[#09090b] border border-[#27272a] rounded-md overflow-hidden relative flex items-center justify-center transition-all duration-300">
                 <div id="reader" class="w-full h-full"></div>
                 <div id="reader-overlay" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-4 text-center">
-                  <i data-lucide="qr-code" class="w-12 h-12 text-slate-600 mb-2"></i>
-                  <p class="text-xs text-slate-400">Klik "Aktifkan Kamera" untuk mulai memindai</p>
+                  <i data-lucide="qr-code" class="w-10 h-10 text-zinc-600 mb-2"></i>
+                  <p class="text-xs text-zinc-400">Klik "Aktifkan Kamera" untuk mulai memindai</p>
                 </div>
               </div>
 
               <div class="w-full grid grid-cols-2 gap-2 mt-4">
-                <button id="btn-start-cam" onclick="startScanner()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
-                  <i data-lucide="play" class="w-4 h-4"></i> Aktifkan Kamera
+                <button id="btn-start-cam" onclick="startScanner()" class="w-full bg-[#27272a] hover:bg-[#3f3f46] border border-[#3f3f46] text-white font-medium py-2 px-3 rounded-md text-xs flex items-center justify-center gap-1.5 transition">
+                  <i data-lucide="play" class="w-3.5 h-3.5"></i> Aktifkan Kamera
                 </button>
-                <button id="btn-stop-cam" onclick="stopScanner()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 transition disabled:opacity-50" disabled>
-                  <i data-lucide="square" class="w-4 h-4"></i> Matikan Kamera
+                <button id="btn-stop-cam" onclick="stopScanner()" class="w-full bg-[#18181b] hover:bg-[#27272a] text-zinc-400 font-medium py-2 px-3 rounded-md text-xs flex items-center justify-center gap-1.5 transition border border-[#27272a] disabled:opacity-40" disabled>
+                  <i data-lucide="square" class="w-3.5 h-3.5"></i> Matikan Kamera
                 </button>
               </div>
             </div>
 
             <!-- Manual Submission Input -->
-            <div class="glass-panel p-5 rounded-2xl flex flex-col justify-between">
+            <div class="app-panel p-4 rounded-lg flex flex-col justify-between">
               <div>
-                <h3 class="text-sm font-semibold text-slate-200 mb-3 flex items-center gap-2">
-                  <i data-lucide="keyboard" class="w-4 h-4 text-indigo-400"></i> Absen Manual / Input ID
+                <h3 class="text-xs font-medium text-zinc-200 mb-3 flex items-center gap-2">
+                  <i data-lucide="keyboard" class="w-3.5 h-3.5 text-zinc-400"></i> Absen Manual / Input ID
                 </h3>
 
-                <form onsubmit="handleManualAbsen(event)" class="space-y-4">
+                <form onsubmit="handleManualAbsen(event)" class="space-y-3.5">
                   <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Kode / ID Unik (Siswa/Tentor)</label>
+                    <label class="block text-xs font-medium text-zinc-400 mb-1">Kode / ID Unik (Siswa/Tentor)</label>
                     <input type="text" id="manual-code-input" placeholder="Contoh: SISWA-101 / TENTOR-201" required
-                      class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+                      class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-xs text-white focus:outline-none focus:border-[#3f3f46] transition">
                   </div>
 
                   <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Status Kehadiran</label>
-                    <select id="manual-status-input" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+                    <label class="block text-xs font-medium text-zinc-400 mb-1">Status Kehadiran</label>
+                    <select id="manual-status-input" class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-xs text-white focus:outline-none focus:border-[#3f3f46] transition">
                       <option value="Hadir">Hadir</option>
                       <option value="Izin">Izin</option>
                       <option value="Sakit">Sakit</option>
@@ -397,21 +386,21 @@
                   </div>
 
                   <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Keterangan / Mata Pelajaran (Opsional)</label>
+                    <label class="block text-xs font-medium text-zinc-400 mb-1">Keterangan / Mata Pelajaran (Opsional)</label>
                     <input type="text" id="manual-note-input" placeholder="Contoh: Matematika Lanjutan"
-                      class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+                      class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-xs text-white focus:outline-none focus:border-[#3f3f46] transition">
                   </div>
 
-                  <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-xl text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-600/20">
+                  <button type="submit" class="w-full bg-[#27272a] hover:bg-[#3f3f46] border border-[#3f3f46] text-white font-medium py-2 rounded-md text-xs flex items-center justify-center gap-2 transition">
                     <i data-lucide="check-circle" class="w-4 h-4"></i> Submit Presensi
                   </button>
                 </form>
               </div>
 
               <!-- Quick Scan Result Box -->
-              <div id="scan-result-card" class="mt-4 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs hidden">
-                <p class="font-semibold text-slate-300" id="scan-res-title">Status Presensi</p>
-                <p class="text-slate-400 mt-1" id="scan-res-body">-</p>
+              <div id="scan-result-card" class="mt-4 p-3 rounded-md bg-[#09090b] border border-[#27272a] text-xs hidden">
+                <p class="font-medium text-zinc-300" id="scan-res-title">Status Presensi</p>
+                <p class="text-zinc-400 mt-0.5 text-xs" id="scan-res-body">-</p>
               </div>
             </div>
           </div>
@@ -422,24 +411,24 @@
       <section id="tab-siswa" class="tab-content space-y-6 hidden">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 class="text-2xl font-bold text-white">Riwayat Presensi Siswa</h2>
-            <p class="text-slate-400 text-sm">Daftar rekapan kehadiran seluruh siswa bimbingan yang tersimpan di Firestore.</p>
+            <h2 class="text-xl font-bold text-white tracking-tight">Riwayat Presensi Siswa</h2>
+            <p class="text-zinc-400 text-xs">Daftar rekapan kehadiran seluruh siswa bimbingan yang tersimpan di Firestore.</p>
           </div>
-          <button onclick="exportToCSV('Siswa')" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3.5 py-2.5 rounded-xl border border-slate-700 transition">
-            <i data-lucide="download" class="w-4 h-4 text-emerald-400"></i> Export Excel/CSV
+          <button onclick="exportToCSV('Siswa')" class="inline-flex items-center gap-2 bg-[#18181b] hover:bg-[#27272a] text-zinc-200 text-xs font-medium px-3.5 py-2 rounded-md border border-[#27272a] transition">
+            <i data-lucide="download" class="w-4 h-4 text-zinc-400"></i> Export Excel/CSV
           </button>
         </div>
 
         <!-- Filter Controls -->
-        <div class="glass-panel p-4 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="app-panel p-3.5 rounded-lg flex flex-col md:flex-row items-center justify-between gap-3">
           <div class="relative w-full md:w-72">
-            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-zinc-500"></i>
             <input type="text" id="search-siswa-input" onkeyup="renderSiswaTable()" placeholder="Cari Nama / Kelas / Kode ID..."
-              class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+              class="w-full bg-[#09090b] border border-[#27272a] rounded-md pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-[#3f3f46]">
           </div>
 
           <div class="flex items-center gap-2 w-full md:w-auto">
-            <select id="filter-status-siswa" onchange="renderSiswaTable()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <select id="filter-status-siswa" onchange="renderSiswaTable()" class="bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-xs text-white focus:outline-none focus:border-[#3f3f46]">
               <option value="ALL">Semua Status</option>
               <option value="Hadir">Hadir</option>
               <option value="Izin">Izin</option>
@@ -450,21 +439,21 @@
         </div>
 
         <!-- Table Data Siswa -->
-        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800">
+        <div class="app-panel rounded-lg overflow-hidden border border-[#27272a]">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
-              <thead class="bg-slate-900/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
+              <thead class="bg-[#18181b] text-zinc-400 uppercase tracking-wider font-medium border-b border-[#27272a]">
                 <tr>
-                  <th class="py-3.5 px-4">Waktu Absen</th>
-                  <th class="py-3.5 px-4">Kode ID</th>
-                  <th class="py-3.5 px-4">Nama Siswa</th>
-                  <th class="py-3.5 px-4">Kelas</th>
-                  <th class="py-3.5 px-4">Status</th>
-                  <th class="py-3.5 px-4">Keterangan</th>
-                  <th class="py-3.5 px-4 text-right">Aksi</th>
+                  <th class="py-3 px-4">Waktu Absen</th>
+                  <th class="py-3 px-4">Kode ID</th>
+                  <th class="py-3 px-4">Nama Siswa</th>
+                  <th class="py-3 px-4">Kelas</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4">Keterangan</th>
+                  <th class="py-3 px-4 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody id="table-presensi-siswa-body" class="divide-y divide-slate-800/60 text-slate-200">
+              <tbody id="table-presensi-siswa-body" class="divide-y divide-[#27272a] text-zinc-200">
                 <!-- Dynamically populated -->
               </tbody>
             </table>
@@ -476,24 +465,24 @@
       <section id="tab-tentor" class="tab-content space-y-6 hidden">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 class="text-2xl font-bold text-white">Riwayat Presensi Tentor</h2>
-            <p class="text-slate-400 text-sm">Catatan kehadiran, sesi kelas, dan jam mengajar pengajar.</p>
+            <h2 class="text-xl font-bold text-white tracking-tight">Riwayat Presensi Tentor</h2>
+            <p class="text-zinc-400 text-xs">Catatan kehadiran, sesi kelas, dan jam mengajar pengajar.</p>
           </div>
-          <button onclick="exportToCSV('Tentor')" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3.5 py-2.5 rounded-xl border border-slate-700 transition">
-            <i data-lucide="download" class="w-4 h-4 text-emerald-400"></i> Export Excel/CSV
+          <button onclick="exportToCSV('Tentor')" class="inline-flex items-center gap-2 bg-[#18181b] hover:bg-[#27272a] text-zinc-200 text-xs font-medium px-3.5 py-2 rounded-md border border-[#27272a] transition">
+            <i data-lucide="download" class="w-4 h-4 text-zinc-400"></i> Export Excel/CSV
           </button>
         </div>
 
         <!-- Filter Controls -->
-        <div class="glass-panel p-4 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="app-panel p-3.5 rounded-lg flex flex-col md:flex-row items-center justify-between gap-3">
           <div class="relative w-full md:w-72">
-            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-zinc-500"></i>
             <input type="text" id="search-tentor-input" onkeyup="renderTentorTable()" placeholder="Cari Nama Tentor / Mapel..."
-              class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+              class="w-full bg-[#09090b] border border-[#27272a] rounded-md pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-[#3f3f46]">
           </div>
 
           <div class="flex items-center gap-2 w-full md:w-auto">
-            <select id="filter-status-tentor" onchange="renderTentorTable()" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <select id="filter-status-tentor" onchange="renderTentorTable()" class="bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-xs text-white focus:outline-none focus:border-[#3f3f46]">
               <option value="ALL">Semua Status</option>
               <option value="Hadir">Hadir</option>
               <option value="Izin">Izin</option>
@@ -504,21 +493,21 @@
         </div>
 
         <!-- Table Data Tentor -->
-        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800">
+        <div class="app-panel rounded-lg overflow-hidden border border-[#27272a]">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
-              <thead class="bg-slate-900/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
+              <thead class="bg-[#18181b] text-zinc-400 uppercase tracking-wider font-medium border-b border-[#27272a]">
                 <tr>
-                  <th class="py-3.5 px-4">Waktu Check-In</th>
-                  <th class="py-3.5 px-4">Kode ID</th>
-                  <th class="py-3.5 px-4">Nama Tentor</th>
-                  <th class="py-3.5 px-4">Mata Pelajaran</th>
-                  <th class="py-3.5 px-4">Status</th>
-                  <th class="py-3.5 px-4">Sesi / Catatan</th>
-                  <th class="py-3.5 px-4 text-right">Aksi</th>
+                  <th class="py-3 px-4">Waktu Check-In</th>
+                  <th class="py-3 px-4">Kode ID</th>
+                  <th class="py-3 px-4">Nama Tentor</th>
+                  <th class="py-3 px-4">Mata Pelajaran</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4">Sesi / Catatan</th>
+                  <th class="py-3 px-4 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody id="table-presensi-tentor-body" class="divide-y divide-slate-800/60 text-slate-200">
+              <tbody id="table-presensi-tentor-body" class="divide-y divide-[#27272a] text-zinc-200">
                 <!-- Dynamically populated -->
               </tbody>
             </table>
@@ -530,33 +519,33 @@
       <section id="tab-master" class="tab-content space-y-6 hidden">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 class="text-2xl font-bold text-white">Kelola Master Data</h2>
-            <p class="text-slate-400 text-sm">Tambah, perbarui, atau hapus profil Siswa dan Tentor di Firestore.</p>
+            <h2 class="text-xl font-bold text-white tracking-tight">Kelola Master Data</h2>
+            <p class="text-zinc-400 text-xs">Tambah, perbarui, atau hapus profil Siswa dan Tentor di Firestore.</p>
           </div>
-          <button onclick="openAddMemberModal()" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/20">
+          <button onclick="openAddMemberModal()" class="inline-flex items-center gap-2 bg-[#27272a] hover:bg-[#3f3f46] border border-[#3f3f46] text-white text-xs font-medium px-3.5 py-2 rounded-md transition">
             <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Anggota Baru
           </button>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Master Siswa Panel -->
-          <div class="glass-panel p-5 rounded-2xl">
-            <h3 class="font-bold text-slate-100 mb-3 flex items-center justify-between">
-              <span class="flex items-center gap-2"><i data-lucide="graduation-cap" class="w-5 h-5 text-indigo-400"></i> Master Siswa</span>
-              <span id="badge-siswa-count" class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full">0 Siswa</span>
+          <div class="app-panel p-4 rounded-lg">
+            <h3 class="font-semibold text-xs text-zinc-200 mb-3 flex items-center justify-between">
+              <span class="flex items-center gap-2"><i data-lucide="graduation-cap" class="w-4 h-4 text-zinc-400"></i> Master Siswa</span>
+              <span id="badge-siswa-count" class="text-xs bg-[#18181b] border border-[#27272a] text-zinc-300 px-2 py-0.5 rounded font-mono">0 Siswa</span>
             </h3>
-            <div class="overflow-y-auto max-h-[400px] space-y-2 pr-1" id="master-siswa-list">
+            <div class="overflow-y-auto max-h-[380px] space-y-2 pr-1" id="master-siswa-list">
               <!-- Dynamically populated -->
             </div>
           </div>
 
           <!-- Master Tentor Panel -->
-          <div class="glass-panel p-5 rounded-2xl">
-            <h3 class="font-bold text-slate-100 mb-3 flex items-center justify-between">
-              <span class="flex items-center gap-2"><i data-lucide="briefcase" class="w-5 h-5 text-purple-400"></i> Master Tentor</span>
-              <span id="badge-tentor-count" class="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">0 Tentor</span>
+          <div class="app-panel p-4 rounded-lg">
+            <h3 class="font-semibold text-xs text-zinc-200 mb-3 flex items-center justify-between">
+              <span class="flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4 text-zinc-400"></i> Master Tentor</span>
+              <span id="badge-tentor-count" class="text-xs bg-[#18181b] border border-[#27272a] text-zinc-300 px-2 py-0.5 rounded font-mono">0 Tentor</span>
             </h3>
-            <div class="overflow-y-auto max-h-[400px] space-y-2 pr-1" id="master-tentor-list">
+            <div class="overflow-y-auto max-h-[380px] space-y-2 pr-1" id="master-tentor-list">
               <!-- Dynamically populated -->
             </div>
           </div>
@@ -566,48 +555,45 @@
       <!-- TAB 6: QR GENERATOR & PRINT / DOWNLOAD -->
       <section id="tab-generator" class="tab-content space-y-6 hidden">
         <div class="text-center max-w-xl mx-auto">
-          <h2 class="text-2xl font-bold text-white">Generator Kartu ID Presensi</h2>
-          <p class="text-slate-400 text-sm">Pilih anggota untuk memunculkan Kartu ID Presensi Digital secara instan.</p>
+          <h2 class="text-xl font-bold text-white tracking-tight">Generator Kartu ID Presensi</h2>
+          <p class="text-zinc-400 text-xs">Pilih anggota untuk memunculkan Kartu ID Presensi Digital secara instan.</p>
         </div>
 
-        <div class="glass-panel p-6 rounded-2xl max-w-md mx-auto space-y-5">
+        <div class="app-panel p-5 rounded-lg max-w-sm mx-auto space-y-4">
           <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1.5">Pilih Siswa / Tentor</label>
-            <select id="qr-select-member" onchange="generateSelectedQR()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <label class="block text-xs font-medium text-zinc-400 mb-1">Pilih Siswa / Tentor</label>
+            <select id="qr-select-member" onchange="generateSelectedQR()" class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-xs text-white focus:outline-none focus:border-[#3f3f46]">
               <!-- Options populated dynamically -->
             </select>
           </div>
 
-          <!-- Printable & Downloadable Digital Card - Customized as per Screenshot Reference -->
-          <div id="printable-qr-card" class="bg-gradient-to-b from-[#110c28] via-[#150a30] to-[#0c081d] border border-indigo-900/60 rounded-3xl p-7 text-center space-y-4 shadow-2xl relative overflow-hidden">
-            <!-- Subtle Card Glow -->
-            <div class="absolute -top-12 -right-12 w-32 h-32 bg-indigo-600/10 rounded-full blur-2xl pointer-events-none"></div>
-
+          <!-- Printable & Downloadable Digital Card -->
+          <div id="printable-qr-card" class="bg-[#18181b] border border-[#27272a] rounded-xl p-5 text-center space-y-3.5 shadow-md relative overflow-hidden">
             <!-- Header Label -->
-            <div class="text-[11px] font-bold text-indigo-300/80 tracking-[0.2em] uppercase pt-1">
+            <div class="text-xs font-semibold text-zinc-400 tracking-wider uppercase pt-0.5">
               KARTU PRESENSI DIGITAL
             </div>
 
-            <!-- QR Code Frame Container (Off-white Rounded Box) -->
-            <div class="flex justify-center items-center bg-[#fcfbf4] p-3 rounded-2xl w-48 h-48 mx-auto shadow-lg" id="qrcode-container">
+            <!-- QR Code Frame Container -->
+            <div class="flex justify-center items-center bg-white p-2.5 rounded-lg w-40 h-40 mx-auto shadow-sm" id="qrcode-container">
               <!-- QR Code generated dynamically -->
             </div>
 
             <!-- Member Info Details -->
-            <div class="pt-1 space-y-1">
-              <h4 id="qr-card-name" class="font-bold text-xl text-white tracking-wide">Muhammad Naufal Algani</h4>
-              <p id="qr-card-role" class="text-xs text-indigo-200/80 font-medium">Siswa - Kelas 8B</p>
-              <p id="qr-card-code" class="text-[11px] text-indigo-300/60 font-mono tracking-wider pt-0.5">ID: SISWA 001 - 2026</p>
+            <div class="pt-0.5 space-y-0.5">
+              <h4 id="qr-card-name" class="font-bold text-base text-white tracking-wide">Muhammad Naufal Algani</h4>
+              <p id="qr-card-role" class="text-xs text-zinc-400 font-medium">Siswa - Kelas 8B</p>
+              <p id="qr-card-code" class="text-xs text-zinc-500 font-mono tracking-wider pt-0.5">ID: SISWA 001 - 2026</p>
             </div>
           </div>
 
           <!-- Action Buttons (Print & Download PNG) -->
-          <div class="grid grid-cols-2 gap-3 pt-2">
-            <button onclick="downloadCardAsPNG()" id="btn-download-card" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 transition">
-              <i data-lucide="download" class="w-4 h-4"></i> Simpan Gambar
+          <div class="grid grid-cols-2 gap-2.5 pt-1">
+            <button onclick="downloadCardAsPNG()" id="btn-download-card" class="w-full bg-[#27272a] hover:bg-[#3f3f46] border border-[#3f3f46] text-white font-medium py-2 rounded-md text-xs flex items-center justify-center gap-1.5 transition">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Simpan Gambar
             </button>
-            <button onclick="printCardOnly()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 border border-slate-700 transition">
-              <i data-lucide="printer" class="w-4 h-4"></i> Cetak Kartu
+            <button onclick="printCardOnly()" class="w-full bg-[#18181b] hover:bg-[#27272a] text-zinc-200 font-medium py-2 rounded-md text-xs flex items-center justify-center gap-1.5 border border-[#27272a] transition">
+              <i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak Kartu
             </button>
           </div>
         </div>
@@ -617,32 +603,32 @@
   </div>
 
   <!-- AUTHENTICATION / PIN LOCK OVERLAY MODAL -->
-  <div id="modal-pin-auth" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="glass-panel w-full max-w-sm p-6 rounded-3xl border border-indigo-500/30 shadow-2xl relative text-center">
-      <div class="w-14 h-14 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-500/20">
-        <i data-lucide="lock" class="w-7 h-7"></i>
+  <div id="modal-pin-auth" class="fixed inset-0 z-50 bg-[#09090b]/85 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="app-panel w-full max-w-sm p-6 rounded-lg border border-[#27272a] shadow-xl relative text-center">
+      <div class="w-12 h-12 flex items-center justify-center mx-auto mb-3 text-zinc-300">
+        <i data-lucide="lock" class="w-6 h-6"></i>
       </div>
 
-      <h3 class="font-bold text-xl text-white mb-1">Akses Terkunci</h3>
-      <p class="text-xs text-slate-400 mb-6">Masukkan PIN / Passkey Keamanan Administrator untuk melanjutkan.</p>
+      <h3 class="font-bold text-lg text-white mb-1">Akses Terkunci</h3>
+      <p class="text-xs text-zinc-400 mb-5">Masukkan PIN / Passkey Keamanan Administrator untuk melanjutkan.</p>
 
-      <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+      <form onsubmit="handleAuthSubmit(event)" class="space-y-3.5">
         <div class="relative">
-          <input type="password" id="input-pin-auth" maxlength="12" placeholder="Masukkan PIN " required autofocus
-            class="w-full bg-slate-900/90 border border-slate-700 rounded-2xl px-4 py-3 text-center text-lg font-mono tracking-widest text-white focus:outline-none focus:border-indigo-500 transition">
+          <input type="password" id="input-pin-auth" maxlength="12" placeholder="Masukkan PIN" required autofocus
+            class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3.5 py-2.5 text-center text-base font-mono tracking-widest text-white focus:outline-none focus:border-[#3f3f46] transition">
         </div>
 
         <p id="pin-error-msg" class="text-xs text-red-400 hidden flex items-center justify-center gap-1">
           <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> PIN Salah! Silakan coba lagi.
         </p>
 
-        <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold py-3 rounded-2xl text-sm shadow-lg shadow-indigo-600/30 transition">
+        <button type="submit" class="w-full bg-[#27272a] hover:bg-[#3f3f46] border border-[#3f3f46] text-white font-medium py-2.5 rounded-md text-xs transition">
           Buka Akses Sistem
         </button>
       </form>
 
-      <div class="mt-4 pt-3 border-t border-slate-800">
-        <button onclick="switchTab('scan'); closeAuthModal();" class="text-xs text-slate-400 hover:text-indigo-300 transition flex items-center justify-center gap-1.5 mx-auto">
+      <div class="mt-4 pt-3 border-t border-[#27272a]">
+        <button onclick="switchTab('scan'); closeAuthModal();" class="text-xs text-zinc-400 hover:text-white transition flex items-center justify-center gap-1.5 mx-auto">
           <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali ke Pemindai Absen Publik
         </button>
       </div>
@@ -650,72 +636,72 @@
   </div>
 
   <!-- MODAL CHANGE PIN -->
-  <div id="modal-change-pin" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="glass-panel w-full max-w-sm p-6 rounded-2xl border border-slate-700 shadow-2xl relative">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="font-bold text-base text-white flex items-center gap-2">
-          <i data-lucide="key-round" class="w-4 h-4 text-indigo-400"></i> Ubah Passkey / PIN
+  <div id="modal-change-pin" class="fixed inset-0 z-50 bg-[#09090b]/85 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="app-panel w-full max-w-sm p-5 rounded-lg border border-[#27272a] shadow-xl relative">
+      <div class="flex items-center justify-between mb-3.5">
+        <h3 class="font-semibold text-xs text-white flex items-center gap-2">
+          <i data-lucide="key-round" class="w-4 h-4 text-zinc-400"></i> Ubah Passkey / PIN
         </h3>
-        <button onclick="closeChangePinModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+        <button onclick="closeChangePinModal()" class="text-zinc-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
 
       <form onsubmit="handleChangePinSubmit(event)" class="space-y-3 text-xs">
         <div>
-          <label class="block font-medium text-slate-400 mb-1">PIN Lama</label>
-          <input type="password" id="input-pin-old" required placeholder="Masukkan PIN lama" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          <label class="block font-medium text-zinc-400 mb-1">PIN Lama</label>
+          <input type="password" id="input-pin-old" required placeholder="Masukkan PIN lama" class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-white font-mono">
         </div>
         <div>
-          <label class="block font-medium text-slate-400 mb-1">PIN Baru</label>
-          <input type="password" id="input-pin-new" required minlength="4" maxlength="12" placeholder="PIN Baru (Min. 4 Karakter)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          <label class="block font-medium text-zinc-400 mb-1">PIN Baru</label>
+          <input type="password" id="input-pin-new" required minlength="4" maxlength="12" placeholder="PIN Baru (Min. 4 Karakter)" class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-white font-mono">
         </div>
         <div>
-          <label class="block font-medium text-slate-400 mb-1">Konfirmasi PIN Baru</label>
-          <input type="password" id="input-pin-confirm" required minlength="4" maxlength="12" placeholder="Ulangi PIN baru" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono">
+          <label class="block font-medium text-zinc-400 mb-1">Konfirmasi PIN Baru</label>
+          <input type="password" id="input-pin-confirm" required minlength="4" maxlength="12" placeholder="Ulangi PIN baru" class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-white font-mono">
         </div>
 
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeChangePinModal()" class="px-3.5 py-2 bg-slate-800 text-slate-300 rounded-xl">Batal</button>
-          <button type="submit" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-medium">Simpan PIN Baru</button>
+          <button type="button" onclick="closeChangePinModal()" class="px-3 py-2 bg-[#18181b] text-zinc-300 rounded-md border border-[#27272a]">Batal</button>
+          <button type="submit" class="px-3 py-2 bg-[#27272a] hover:bg-[#3f3f46] text-white rounded-md font-medium border border-[#3f3f46]">Simpan PIN Baru</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Modal Add Member -->
-  <div id="modal-add-member" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="glass-panel w-full max-w-md p-6 rounded-2xl border border-slate-700 shadow-2xl relative">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="font-bold text-lg text-white" id="modal-title">Tambah Anggota Baru</h3>
-        <button onclick="closeAddMemberModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+  <div id="modal-add-member" class="fixed inset-0 z-50 bg-[#09090b]/85 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="app-panel w-full max-w-md p-5 rounded-lg border border-[#27272a] shadow-xl relative">
+      <div class="flex items-center justify-between mb-3.5">
+        <h3 class="font-semibold text-sm text-white" id="modal-title">Tambah Anggota Baru</h3>
+        <button onclick="closeAddMemberModal()" class="text-zinc-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
 
-      <form onsubmit="handleSaveMember(event)" class="space-y-4">
+      <form onsubmit="handleSaveMember(event)" class="space-y-3.5">
         <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Kategori</label>
-          <select id="member-type" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
+          <label class="block text-xs font-medium text-zinc-400 mb-1">Kategori</label>
+          <select id="member-type" class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-xs text-white">
             <option value="Siswa">Siswa</option>
             <option value="Tentor">Tentor</option>
           </select>
         </div>
 
         <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Kode ID Unik (Misal: SISWA-105)</label>
-          <input type="text" id="member-code" required placeholder="SISWA-xxx / TENTOR-xxx" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
+          <label class="block text-xs font-medium text-zinc-400 mb-1">Kode ID Unik (Misal: SISWA-105)</label>
+          <input type="text" id="member-code" required placeholder="SISWA-xxx / TENTOR-xxx" class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-xs text-white">
         </div>
 
         <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Nama Lengkap</label>
-          <input type="text" id="member-name" required placeholder="Muhammad Naufal Algani" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
+          <label class="block text-xs font-medium text-zinc-400 mb-1">Nama Lengkap</label>
+          <input type="text" id="member-name" required placeholder="Muhammad Naufal Algani" class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-xs text-white">
         </div>
 
         <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Kelas / Mata Pelajaran</label>
-          <input type="text" id="member-extra" required placeholder="Kelas 8B / Tentor Fisika" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
+          <label class="block text-xs font-medium text-zinc-400 mb-1">Kelas / Mata Pelajaran</label>
+          <input type="text" id="member-extra" required placeholder="Kelas 8B / Tentor Fisika" class="w-full bg-[#09090b] border border-[#27272a] rounded-md px-3 py-2 text-xs text-white">
         </div>
 
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeAddMemberModal()" class="px-4 py-2 bg-slate-800 text-slate-300 text-xs rounded-xl font-medium">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs rounded-xl font-medium">Simpan Anggota</button>
+          <button type="button" onclick="closeAddMemberModal()" class="px-3.5 py-2 bg-[#18181b] text-zinc-300 text-xs rounded-md font-medium border border-[#27272a]">Batal</button>
+          <button type="submit" class="px-3.5 py-2 bg-[#27272a] hover:bg-[#3f3f46] text-white text-xs rounded-md font-medium border border-[#3f3f46]">Simpan Anggota</button>
         </div>
       </form>
     </div>
@@ -746,7 +732,6 @@
     let app, db;
     let isFirebaseOnline = false;
 
-    // Initialize Firebase Services
     try {
       app = initializeApp(firebaseConfig);
       db = getFirestore(app);
@@ -757,7 +742,6 @@
       updateSyncStatus('offline', 'Mode Lokal (Offline)');
     }
 
-    // Default Seed Data
     const defaultMaster = [
       { id: 'm-1', code: 'SISWA-001', name: 'Muhammad Naufal Algani', type: 'Siswa', extra: 'Kelas 8B' },
       { id: 'm-2', code: 'SISWA-102', name: 'Siti Nurhaliza', type: 'Siswa', extra: 'Kelas 11 IPS 2' },
@@ -771,7 +755,6 @@
       { id: 'att-2', code: 'TENTOR-201', name: 'Dr. Ahmad Fauzi', type: 'Tentor', extra: 'Tentor Fisika', status: 'Hadir', note: 'Sesi Fisika Regular', timestamp: new Date(Date.now() - 3600000).toISOString() }
     ];
 
-    // Global App State
     window.appState = {
       masterMembers: JSON.parse(localStorage.getItem('ep_master')) || defaultMaster,
       attendance: JSON.parse(localStorage.getItem('ep_attendance')) || defaultAttendance
@@ -790,19 +773,18 @@
       if (!badge) return;
 
       if (type === 'online') {
-        badge.className = "flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full";
-        dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-ping";
-        label.className = "text-xs font-medium text-emerald-400";
+        badge.className = "flex items-center gap-2";
+        dot.className = "w-2 h-2 rounded-full bg-white animate-pulse";
+        label.className = "text-xs font-medium text-white";
       } else {
-        badge.className = "flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-full";
-        dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-ping";
-        label.className = "text-xs font-medium text-amber-400";
+        badge.className = "flex items-center gap-2";
+        dot.className = "w-2 h-2 rounded-full bg-amber-500 animate-pulse";
+        label.className = "text-xs font-medium text-amber-500";
       }
       label.textContent = text;
     }
 
     if (isFirebaseOnline && db) {
-      // 1. Listen for Attendance Collection
       try {
         const attCol = collection(db, 'attendance');
         onSnapshot(attCol, (snapshot) => {
@@ -827,7 +809,6 @@
         });
       } catch(e) { console.error(e); }
 
-      // 2. Listen for Master Members Collection
       try {
         const masterCol = collection(db, 'master_members');
         onSnapshot(masterCol, (snapshot) => {
@@ -851,7 +832,6 @@
       } catch(e) { console.error(e); }
     }
 
-    // Expose DB Operations to Window for HTML Handlers
     window.dbOps = {
       async addAttendance(entry) {
         window.appState.attendance.unshift(entry);
@@ -863,7 +843,6 @@
             await setDoc(doc(db, 'attendance', entry.id), entry);
             window.showToast("Data tersimpan ke Firestore", "success");
           } catch(e) {
-            console.error("Error writing to Firestore:", e);
             window.showToast("Tersimpan di Penyimpanan Lokal", "info");
           }
         } else {
@@ -918,13 +897,11 @@
     let html5QrcodeScanner = null;
     let chartInstance = null;
 
-    // ANTI-SPAM & DEBOUNCE SCANNER VARIABLES
     let isProcessingScan = false;
     let lastScannedCode = "";
     let lastScanTimestamp = 0;
     const SCAN_COOLDOWN_MS = 4000;
 
-    // AUTHENTICATION STATE
     let targetTabAfterAuth = 'dashboard';
     const DEFAULT_PIN = "GenZPresens";
 
@@ -936,7 +913,6 @@
       return sessionStorage.getItem('ep_auth_token') === 'authenticated';
     }
 
-    // Window Load Setup
     window.onload = function() {
       lucide.createIcons();
       updateClock();
@@ -947,9 +923,8 @@
       populateQRSelect();
       updateAuthUIState();
 
-      // Check URL tab parameter or default to Dashboard
       if (!isAuthenticated()) {
-        switchTab('scan'); // Default to scan if locked
+        switchTab('scan');
       } else {
         switchTab('dashboard');
       }
@@ -960,12 +935,12 @@
       if (!container) return;
 
       const toast = document.createElement('div');
-      let bgColor = "bg-slate-800 border-slate-700 text-slate-200";
-      if (type === 'success') bgColor = "bg-emerald-900/90 border-emerald-500 text-emerald-100";
-      if (type === 'error') bgColor = "bg-red-900/90 border-red-500 text-red-100";
-      if (type === 'warning') bgColor = "bg-amber-900/90 border-amber-500 text-amber-100";
+      let borderColor = "border-[#27272a]";
+      if (type === 'success') borderColor = "border-zinc-400";
+      if (type === 'error') borderColor = "border-red-500";
+      if (type === 'warning') borderColor = "border-amber-500";
 
-      toast.className = `p-3.5 rounded-xl border ${bgColor} text-xs shadow-xl flex items-center justify-between gap-3 animate-slide-in pointer-events-auto`;
+      toast.className = `p-3 rounded-md bg-[#18181b] border ${borderColor} text-zinc-200 text-xs shadow-xl flex items-center justify-between gap-3 animate-slide-in pointer-events-auto`;
 
       let iconName = 'info';
       if (type === 'success') iconName = 'check-circle';
@@ -974,7 +949,7 @@
 
       toast.innerHTML = `
         <div class="flex items-center gap-2">
-          <i data-lucide="${iconName}" class="w-4 h-4 shrink-0"></i>
+          <i data-lucide="${iconName}" class="w-4 h-4 shrink-0 text-zinc-300"></i>
           <span>${message}</span>
         </div>
         <button onclick="this.parentElement.remove()" class="opacity-60 hover:opacity-100"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>
@@ -993,7 +968,6 @@
       document.getElementById('live-date').textContent = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
 
-    // Security & Auth Controllers
     function updateAuthUIState() {
       const isAuth = isAuthenticated();
       const userSessionLabel = document.getElementById('user-session-status');
@@ -1099,7 +1073,6 @@
       document.getElementById('input-pin-confirm').value = '';
     }
 
-    // Navigation Tab Switcher with Auth Guard
     function switchTab(tabId, bypassAuthCheck = false) {
       const publicTabs = ['scan'];
 
@@ -1113,17 +1086,17 @@
       document.getElementById('tab-' + tabId).classList.remove('hidden');
 
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('bg-indigo-600', 'text-white');
-        btn.classList.add('text-slate-300');
+        btn.classList.remove('bg-[#27272a]', 'text-white');
+        btn.classList.add('text-zinc-400');
       });
       const activeNav = document.getElementById('nav-' + tabId);
       if (activeNav) {
-        activeNav.classList.add('bg-indigo-600', 'text-white');
+        activeNav.classList.add('bg-[#27272a]', 'text-white');
       }
 
       document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
-        btn.classList.remove('text-indigo-400');
-        btn.classList.add('text-slate-400');
+        btn.classList.remove('text-white');
+        btn.classList.add('text-zinc-400');
       });
 
       if (tabId !== 'scan' && html5QrcodeScanner) {
@@ -1135,13 +1108,12 @@
       }
     }
 
-    // Camera Scanner Functions
     function startScanner() {
       const readerOverlay = document.getElementById('reader-overlay');
       if (readerOverlay) readerOverlay.classList.add('hidden');
 
       document.getElementById('camera-status').textContent = "Pindai QR...";
-      document.getElementById('camera-status').className = "text-xs bg-indigo-500/20 text-indigo-300 px-2.5 py-0.5 rounded-full font-medium animate-pulse";
+      document.getElementById('camera-status').className = "text-xs bg-[#18181b] border border-[#27272a] text-zinc-200 px-2 py-0.5 rounded font-medium";
 
       document.getElementById('btn-start-cam').disabled = true;
       document.getElementById('btn-stop-cam').disabled = false;
@@ -1170,7 +1142,7 @@
           if (readerOverlay) readerOverlay.classList.remove('hidden');
 
           document.getElementById('camera-status').textContent = "Siap";
-          document.getElementById('camera-status').className = "text-xs bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full font-medium";
+          document.getElementById('camera-status').className = "text-xs bg-[#18181b] border border-[#27272a] text-amber-500 px-2 py-0.5 rounded font-medium";
           document.getElementById('btn-start-cam').disabled = false;
           document.getElementById('btn-stop-cam').disabled = true;
         }).catch(err => console.error(err));
@@ -1228,7 +1200,7 @@
       resCard.classList.remove('hidden');
 
       if (!member) {
-        resCard.className = "mt-4 p-3.5 rounded-xl bg-red-500/20 border border-red-500/40 text-xs text-red-300";
+        resCard.className = "mt-4 p-3 rounded-md bg-[#09090b] border border-red-500 text-xs text-red-400";
         resTitle.textContent = "QR Code Tidak Dikenali!";
         resBody.textContent = `Kode "${code}" tidak terdaftar dalam database.`;
         showToast(`Kode ID ${code} tidak terdaftar!`, "error");
@@ -1250,7 +1222,7 @@
         window.dbOps.addAttendance(newEntry);
       }
 
-      resCard.className = "mt-4 p-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-xs text-emerald-300";
+      resCard.className = "mt-4 p-3 rounded-md bg-[#09090b] border border-zinc-500 text-xs text-zinc-300";
       resTitle.textContent = `Presensi Berhasil (${member.type})`;
       resBody.textContent = `${member.name} (${member.extra}) - Status: ${status}`;
     }
@@ -1280,7 +1252,6 @@
       } catch(e) {}
     }
 
-    // UI Render Controllers
     function renderAllData() {
       renderStats();
       renderFeed();
@@ -1319,26 +1290,25 @@
       feedContainer.innerHTML = '';
 
       if (state.attendance.length === 0) {
-        feedContainer.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">Belum ada presensi tercatat.</p>`;
+        feedContainer.innerHTML = `<p class="text-xs text-zinc-500 text-center py-4">Belum ada presensi tercatat.</p>`;
         return;
       }
 
       state.attendance.slice(0, 6).forEach(item => {
         const timeStr = new Date(item.timestamp).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-        const badgeColor = item.type === 'Siswa' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-purple-500/10 text-purple-400 border-purple-500/20';
 
         const html = `
-          <div class="glass-card p-2.5 rounded-xl flex items-center justify-between text-xs">
+          <div class="app-card p-2.5 rounded-md flex items-center justify-between text-xs">
             <div class="flex items-center gap-2.5">
-              <div class="w-7 h-7 rounded-lg border flex items-center justify-center font-bold ${badgeColor}">
+              <div class="w-7 h-7 rounded border border-[#27272a] flex items-center justify-center font-bold text-zinc-300 bg-[#09090b]">
                 ${item.type === 'Siswa' ? 'S' : 'T'}
               </div>
               <div>
-                <p class="font-semibold text-slate-200">${item.name}</p>
-                <p class="text-[10px] text-slate-400">${item.extra} • <span class="text-indigo-300">${item.status}</span></p>
+                <p class="font-medium text-zinc-200">${item.name}</p>
+                <p class="text-xs text-zinc-400">${item.extra} • <span class="text-zinc-300">${item.status}</span></p>
               </div>
             </div>
-            <span class="text-[10px] text-slate-400 font-mono">${timeStr}</span>
+            <span class="text-xs text-zinc-500 font-mono">${timeStr}</span>
           </div>
         `;
         feedContainer.insertAdjacentHTML('beforeend', html);
@@ -1359,27 +1329,27 @@
       );
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-500">Tidak ada riwayat presensi siswa ditemukan.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-zinc-500">Tidak ada riwayat presensi siswa ditemukan.</td></tr>`;
         return;
       }
 
       filtered.forEach(item => {
         const timeStr = new Date(item.timestamp).toLocaleString('id-ID');
-        let statusBadge = "bg-emerald-500/20 text-emerald-300";
-        if (item.status === 'Izin') statusBadge = "bg-amber-500/20 text-amber-300";
-        if (item.status === 'Sakit') statusBadge = "bg-blue-500/20 text-blue-300";
-        if (item.status === 'Alpa') statusBadge = "bg-red-500/20 text-red-300";
+        let statusBadge = "bg-[#18181b] text-zinc-200 border border-[#27272a]";
+        if (item.status === 'Izin') statusBadge = "bg-[#18181b] text-amber-400 border border-amber-500/30";
+        if (item.status === 'Sakit') statusBadge = "bg-[#18181b] text-zinc-300 border border-[#3f3f46]";
+        if (item.status === 'Alpa') statusBadge = "bg-[#18181b] text-red-400 border border-red-500/30";
 
         const row = `
-          <tr class="hover:bg-slate-800/40 transition">
-            <td class="py-3 px-4 text-slate-400 font-mono">${timeStr}</td>
-            <td class="py-3 px-4 font-mono text-indigo-400 font-semibold">${item.code}</td>
-            <td class="py-3 px-4 font-semibold text-slate-100">${item.name}</td>
-            <td class="py-3 px-4 text-slate-300">${item.extra}</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-semibold ${statusBadge}">${item.status}</span></td>
-            <td class="py-3 px-4 text-slate-400">${item.note || '-'}</td>
+          <tr class="hover:bg-[#121214] transition">
+            <td class="py-3 px-4 text-zinc-400 font-mono">${timeStr}</td>
+            <td class="py-3 px-4 font-mono text-zinc-300 font-medium">${item.code}</td>
+            <td class="py-3 px-4 font-medium text-white">${item.name}</td>
+            <td class="py-3 px-4 text-zinc-300">${item.extra}</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded text-xs font-medium ${statusBadge}">${item.status}</span></td>
+            <td class="py-3 px-4 text-zinc-400">${item.note || '-'}</td>
             <td class="py-3 px-4 text-right">
-              <button onclick="window.dbOps.deleteAttendance('${item.id}')" class="text-slate-500 hover:text-red-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+              <button onclick="window.dbOps.deleteAttendance('${item.id}')" class="text-zinc-500 hover:text-red-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
             </td>
           </tr>
         `;
@@ -1402,27 +1372,27 @@
       );
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-500">Tidak ada riwayat presensi tentor ditemukan.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-zinc-500">Tidak ada riwayat presensi tentor ditemukan.</td></tr>`;
         return;
       }
 
       filtered.forEach(item => {
         const timeStr = new Date(item.timestamp).toLocaleString('id-ID');
-        let statusBadge = "bg-emerald-500/20 text-emerald-300";
-        if (item.status === 'Izin') statusBadge = "bg-amber-500/20 text-amber-300";
-        if (item.status === 'Sakit') statusBadge = "bg-blue-500/20 text-blue-300";
-        if (item.status === 'Alpa') statusBadge = "bg-red-500/20 text-red-300";
+        let statusBadge = "bg-[#18181b] text-zinc-200 border border-[#27272a]";
+        if (item.status === 'Izin') statusBadge = "bg-[#18181b] text-amber-400 border border-amber-500/30";
+        if (item.status === 'Sakit') statusBadge = "bg-[#18181b] text-zinc-300 border border-[#3f3f46]";
+        if (item.status === 'Alpa') statusBadge = "bg-[#18181b] text-red-400 border border-red-500/30";
 
         const row = `
-          <tr class="hover:bg-slate-800/40 transition">
-            <td class="py-3 px-4 text-slate-400 font-mono">${timeStr}</td>
-            <td class="py-3 px-4 font-mono text-purple-400 font-semibold">${item.code}</td>
-            <td class="py-3 px-4 font-semibold text-slate-100">${item.name}</td>
-            <td class="py-3 px-4 text-slate-300">${item.extra}</td>
-            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-semibold ${statusBadge}">${item.status}</span></td>
-            <td class="py-3 px-4 text-slate-400">${item.note || 'Sesi Regular'}</td>
+          <tr class="hover:bg-[#121214] transition">
+            <td class="py-3 px-4 text-zinc-400 font-mono">${timeStr}</td>
+            <td class="py-3 px-4 font-mono text-zinc-300 font-medium">${item.code}</td>
+            <td class="py-3 px-4 font-medium text-white">${item.name}</td>
+            <td class="py-3 px-4 text-zinc-300">${item.extra}</td>
+            <td class="py-3 px-4"><span class="px-2.5 py-1 rounded text-xs font-medium ${statusBadge}">${item.status}</span></td>
+            <td class="py-3 px-4 text-zinc-400">${item.note || 'Sesi Regular'}</td>
             <td class="py-3 px-4 text-right">
-              <button onclick="window.dbOps.deleteAttendance('${item.id}')" class="text-slate-500 hover:text-red-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+              <button onclick="window.dbOps.deleteAttendance('${item.id}')" class="text-zinc-500 hover:text-red-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
             </td>
           </tr>
         `;
@@ -1447,12 +1417,12 @@
 
       siswas.forEach(s => {
         const html = `
-          <div class="glass-card p-3 rounded-xl flex items-center justify-between text-xs">
+          <div class="app-card p-2.5 rounded-md flex items-center justify-between text-xs">
             <div>
-              <p class="font-bold text-slate-100">${s.name}</p>
-              <p class="text-[10px] text-slate-400"><span class="text-indigo-400 font-mono">${s.code}</span> • ${s.extra}</p>
+              <p class="font-medium text-white">${s.name}</p>
+              <p class="text-xs text-zinc-400"><span class="text-zinc-300 font-mono">${s.code}</span> • ${s.extra}</p>
             </div>
-            <button onclick="window.dbOps.deleteMember('${s.id}')" class="text-slate-500 hover:text-red-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            <button onclick="window.dbOps.deleteMember('${s.id}')" class="text-zinc-500 hover:text-red-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
         `;
         siswaContainer.insertAdjacentHTML('beforeend', html);
@@ -1460,12 +1430,12 @@
 
       tentors.forEach(t => {
         const html = `
-          <div class="glass-card p-3 rounded-xl flex items-center justify-between text-xs">
+          <div class="app-card p-2.5 rounded-md flex items-center justify-between text-xs">
             <div>
-              <p class="font-bold text-slate-100">${t.name}</p>
-              <p class="text-[10px] text-slate-400"><span class="text-purple-400 font-mono">${t.code}</span> • ${t.extra}</p>
+              <p class="font-medium text-white">${t.name}</p>
+              <p class="text-xs text-zinc-400"><span class="text-zinc-300 font-mono">${t.code}</span> • ${t.extra}</p>
             </div>
-            <button onclick="window.dbOps.deleteMember('${t.id}')" class="text-slate-500 hover:text-red-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            <button onclick="window.dbOps.deleteMember('${t.id}')" class="text-zinc-500 hover:text-red-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
         `;
         tentorContainer.insertAdjacentHTML('beforeend', html);
@@ -1505,7 +1475,6 @@
       document.getElementById('member-extra').value = '';
     }
 
-    // Generator Dropdown & Card Rendering
     function populateQRSelect() {
       const state = window.appState || { masterMembers: [], attendance: [] };
       const select = document.getElementById('qr-select-member');
@@ -1534,15 +1503,14 @@
 
       new QRCode(container, {
         text: member.code,
-        width: 160,
-        height: 160,
-        colorDark : "#150a30",
+        width: 140,
+        height: 140,
+        colorDark : "#09090b",
         colorLight : "#ffffff",
         correctLevel : QRCode.CorrectLevel.H
       });
     }
 
-    // Download Card as PNG Functionality
     function downloadCardAsPNG() {
       const cardElement = document.getElementById('printable-qr-card');
       const btn = document.getElementById('btn-download-card');
@@ -1556,7 +1524,7 @@
       btn.disabled = true;
 
       html2canvas(cardElement, {
-        scale: 3, // High DPI resolution output
+        scale: 3,
         backgroundColor: null,
         useCORS: true
       }).then(canvas => {
@@ -1577,12 +1545,10 @@
       });
     }
 
-    // Clean Print Handler
     function printCardOnly() {
       window.print();
     }
 
-    // Export CSV Helper
     function exportToCSV(type) {
       const state = window.appState || { masterMembers: [], attendance: [] };
       const filtered = state.attendance.filter(a => a.type === type);
@@ -1607,7 +1573,6 @@
       document.body.removeChild(link);
     }
 
-    // Chart.js Setup
     function initChart() {
       const ctx = document.getElementById('attendanceChart').getContext('2d');
       chartInstance = new Chart(ctx, {
@@ -1618,18 +1583,18 @@
             {
               label: 'Siswa Hadir',
               data: [12, 18, 15, 20, 24, 22, 10],
-              borderColor: '#6366f1',
-              backgroundColor: 'rgba(99, 102, 241, 0.1)',
-              fill: true,
-              tension: 0.4
+              borderColor: '#f4f4f5',
+              backgroundColor: 'transparent',
+              borderWidth: 1.5,
+              tension: 0.15
             },
             {
               label: 'Tentor Sesi',
               data: [3, 4, 5, 4, 6, 5, 2],
-              borderColor: '#a855f7',
-              backgroundColor: 'rgba(168, 85, 247, 0.1)',
-              fill: true,
-              tension: 0.4
+              borderColor: '#71717a',
+              backgroundColor: 'transparent',
+              borderWidth: 1.5,
+              tension: 0.15
             }
           ]
         },
@@ -1637,11 +1602,11 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 } } }
+            legend: { labels: { color: '#a1a1aa', font: { family: 'Inter', size: 11 } } }
           },
           scales: {
-            x: { ticks: { color: '#64748b' }, grid: { color: 'rgba(255, 255, 255, 0.05)' } },
-            y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(255, 255, 255, 0.05)' } }
+            x: { ticks: { color: '#71717a' }, grid: { color: '#27272a' } },
+            y: { ticks: { color: '#71717a' }, grid: { color: '#27272a' } }
           }
         }
       });
